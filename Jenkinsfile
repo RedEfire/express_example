@@ -12,6 +12,14 @@ pipeline{
             }
         }
     }
+    stage('Upload to AWS') {
+        steps {
+            withAWS(region:'us-east-2',credentials:'AWS_S3_KEY') {
+            sh 'echo "Uploading content with AWS creds"'
+                s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'app.js', bucket:'omelian-k8s-artifacts')
+            }
+        }
+    }
     post{
         success{
             echo "========pipeline executed successfully ========"
