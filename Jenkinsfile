@@ -12,7 +12,7 @@ pipeline{
                     // docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                     //     image.push("${env.BUILD_NUMBER}")
                     // }
-                    env.DOCKER_IMAGE_TAG = "${env.BUILD_NUMBER}"
+                    env.DOCKER_IMAGE_TAG = env.BUILD_NUMBER
 
                     echo "${env.BUILD_NUMBER}"
                 }
