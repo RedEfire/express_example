@@ -1,4 +1,5 @@
 pipeline{
+    def name = "---anmre----";
     environment {
         DOCKER_IMAGE_TAG = '-----222-----'
         K8S_ARTIFACT_FILE = ''
@@ -37,7 +38,7 @@ pipeline{
     
     post{
         success{
-            echo "========pipeline executed successfully ========" + env.DOCKER_IMAGE_TAG + env.BUILD_NUMBER
+            echo "========pipeline executed successfully ========" + env.DOCKER_IMAGE_TAG + env.BUILD_NUMBER + name
         }
     }
 }
