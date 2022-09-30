@@ -11,7 +11,7 @@ pipeline{
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         def image = docker.build('redefire/express', ".")
                         image.push("${env.BUILD_NUMBER}")
-                        sh 'echo "<<<<Image tag ------ ${image.id}>>>>"'
+                        sh 'echo "<<<<Image tag ------ \${image.id}>>>>"'
                         env.DOCKER_IMAGE_TAG = image.id
                     }
                 }
@@ -35,7 +35,7 @@ pipeline{
     
     post{
         success{
-            echo "========pipeline executed successfully ========${env.DOCKER_IMAGE_TAG}"
+            echo "========pipeline executed successfully ========\${env.DOCKER_IMAGE_TAG}"
         }
     }
 }
