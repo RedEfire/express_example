@@ -17,7 +17,7 @@ pipeline{
                     // }
                     env.DOCKER_IMAGE_TAG = "======uuuu====="
 
-                    echo "${image.id()}"
+                    echo "${image}"
                 }
             }
         }
