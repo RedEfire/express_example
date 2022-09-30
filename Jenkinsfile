@@ -19,7 +19,7 @@ pipeline{
             }
         }
         stage ('Pull k8s manifests repo') {
-            script {
+            steps {
                 sh 'git clone https://github.com/RedEfire/k8s-express-app.git'
                 sh 'cd k8s-express-app && ls -l'
             }
