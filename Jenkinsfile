@@ -7,15 +7,15 @@ pipeline{
     stages{
          stage ('Build Docker Image') {
             steps {
-                script {
-                    def image = docker.build('redefire/express', ".")
-                    // docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                    //     image.push("${env.BUILD_NUMBER}")
-                    // }
-                    env.DOCKER_IMAGE_TAG = env.BUILD_NUMBER
+                
+                def image = docker.build('redefire/express', ".")
+                // docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                //     image.push("${env.BUILD_NUMBER}")
+                // }
+                env.DOCKER_IMAGE_TAG = env.BUILD_NUMBER  
 
-                    echo "${env.BUILD_NUMBER}"
-                }
+                echo "${env.BUILD_NUMBER}"
+                
             }
         }
         stage ('Pull k8s manifests repo') {
