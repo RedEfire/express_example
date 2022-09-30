@@ -8,11 +8,13 @@ pipeline{
          stage ('Build Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        def image = docker.build('redefire/express', ".")
-                        image.push("${env.BUILD_NUMBER}")
-                        env.DOCKER_IMAGE_TAG = "${env.BUILD_NUMBER}"
-                    }
+                    def image = docker.build('redefire/express', ".")
+                    // docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                    //     image.push("${env.BUILD_NUMBER}")
+                    // }
+                    env.DOCKER_IMAGE_TAG = "${env.BUILD_NUMBER}"
+
+                    echo "${env.BUILD_NUMBER}"
                 }
             }
         }
@@ -35,7 +37,7 @@ pipeline{
     
     post{
         success{
-            echo "========pipeline executed successfully ========" + env.DOCKER_IMAGE_TAG
+            echo "========pipeline executed successfully ========" + env.DOCKER_IMAGE_TAG + env.BUILD_NUMBER
         }
     }
 }
