@@ -1,4 +1,8 @@
 pipeline{
+    environment {
+        DOCKER_IMAGE_TAG = ''
+        K8S_ARTIFACT_FILE = ''
+    }
     agent any
     stages{
          stage ('Build Docker Image') {
@@ -8,10 +12,16 @@ pipeline{
                         def image = docker.build('redefire/express', ".")
                         image.push("${env.BUILD_NUMBER}")
                     }
+
+                    sh 'echo "<<<<Image tag ------ ${image.id}>>>>"'
+                    env.DOCKER_IMAGE_TAG = image.id
                 }
             }
         }
-
+        stage ('Pull k8s manifests repo') {
+            sh 'git clone https://github.com/RedEfire/k8s-express-app.git'
+            sh 'cd k8s-express-app && ls -l'
+        }
         stage('Upload to AWS') {
             steps {
                 withAWS(region:'us-east-2',credentials:'AWS_S3_KEY') {
@@ -24,7 +34,7 @@ pipeline{
     
     post{
         success{
-            echo "========pipeline executed successfully ========"
+            echo "========pipeline executed successfully ========${env.DOCKER_IMAGE_TAG}"
         }
     }
 }
