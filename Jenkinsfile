@@ -7,7 +7,7 @@ pipeline{
     stages{
          stage ('Build Docker Image') {
             steps {
-                step {
+                step('-----') {
                     def image = docker.build('redefire/express', ".")
                     // docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                     //     image.push("${env.BUILD_NUMBER}")
