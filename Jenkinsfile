@@ -1,6 +1,6 @@
 pipeline{
     environment {
-        DOCKER_IMAGE_TAG = ''
+        DOCKER_IMAGE_TAG = '-----222-----'
         K8S_ARTIFACT_FILE = ''
     }
     agent any
@@ -11,7 +11,6 @@ pipeline{
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         def image = docker.build('redefire/express', ".")
                         image.push("${env.BUILD_NUMBER}")
-                        sh 'echo "<<<<Image tag ------ " + ${image.id}'
                         env.DOCKER_IMAGE_TAG = image.id
                     }
                 }
