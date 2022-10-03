@@ -35,7 +35,6 @@ pipeline{
     
     post{
         success{
-            ls -l
             echo "========pipeline executed successfully ========" + env.DOCKER_IMAGE_TAG + env.BUILD_NUMBER + imageName
         }
     }
