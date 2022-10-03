@@ -20,6 +20,7 @@ pipeline{
                     def pkgVersion = "0.0." + env.BUILD_NUMBER
                     sh 'rm -rf temp'
                     sh 'mkdir temp && cd temp'
+                    sh 'ls -l'
                     sh 'git clone https://github.com/RedEfire/k8s-express-app.git'
                     sh 'helm package k8s-express-app --version="${pkgVersion}" --set image.tag="${pkgVersion}"'
                 }
