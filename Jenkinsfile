@@ -1,37 +1,32 @@
 
-def imageName = "---anmre----";
+def imageName = "";
 
 pipeline{
-    environment {
-        DOCKER_IMAGE_TAG = '-----222-----'
-        K8S_ARTIFACT_FILE = ''
-    }
     agent any
     stages{
          stage ('Build Docker Image') {
             steps {
                 script {
                     def image = docker.build('redefire/express', ".")
-                    // docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                    //     image.push("${env.BUILD_NUMBER}")
-                    // }
-                    env.DOCKER_IMAGE_TAG = "======uuuu====="
-
-                    echo "${image}"
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        image.push("${env.BUILD_NUMBER}")
+                    }
                 }
             }
         }
         stage ('Pull k8s manifests repo') {
             steps {
-                sh 'rm -rf k8s-express-app'
+                def pkgVersion = "0.0." + env.BUILD_NUMBER
+                sh 'mkdir temp && cd temp'
                 sh 'git clone https://github.com/RedEfire/k8s-express-app.git'
-                sh 'cd k8s-express-app && ls -l'
+                sh 'helm package k8s-express-app --version="${pkgVersion}" --set image.tag="${pkgVersion}"'
             }
         }
         stage('Upload to AWS') {
             steps {
                 withAWS(region:'us-east-2',credentials:'AWS_S3_KEY') {
-                sh 'echo "Uploading content with AWS creds"'
+                    sh 'echo "Uploading content with AWS creds"'
+                    sh 'pwd'
                     s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'app.js', bucket:'omelian-k8s-artifacts')
                 }
             }
@@ -40,6 +35,7 @@ pipeline{
     
     post{
         success{
+            ls -l
             echo "========pipeline executed successfully ========" + env.DOCKER_IMAGE_TAG + env.BUILD_NUMBER + imageName
         }
     }
