@@ -16,10 +16,12 @@ pipeline{
         }
         stage ('Pull k8s manifests repo') {
             steps {
-                def pkgVersion = "0.0." + env.BUILD_NUMBER
-                sh 'mkdir temp && cd temp'
-                sh 'git clone https://github.com/RedEfire/k8s-express-app.git'
-                sh 'helm package k8s-express-app --version="${pkgVersion}" --set image.tag="${pkgVersion}"'
+                step {
+                    def pkgVersion = "0.0." + env.BUILD_NUMBER
+                    sh 'mkdir temp && cd temp'
+                    sh 'git clone https://github.com/RedEfire/k8s-express-app.git'
+                    sh 'helm package k8s-express-app --version="${pkgVersion}" --set image.tag="${pkgVersion}"'
+                }
             }
         }
         stage('Upload to AWS') {
