@@ -8,9 +8,9 @@ pipeline{
             steps {
                 script {
                     def image = docker.build('redefire/express', ".")
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        image.push("${env.BUILD_NUMBER}")
-                    }
+                    // docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                    //     image.push("${env.BUILD_NUMBER}")
+                    // }
                 }
             }
         }
@@ -19,6 +19,7 @@ pipeline{
                 script {
                     def pkgVersion = "0.0." + env.BUILD_NUMBER
                     sh 'cd ..'
+                    sh 'ls -l'
                     sh 'rm -rf temp_fold'
                     sh 'mkdir temp_fold && cd temp_fold'
                     sh 'ls -l'
