@@ -18,11 +18,13 @@ pipeline{
             steps {
                 script {
                     def pkgVersion = "0.0." + env.BUILD_NUMBER
-                    sh 'rm -rf temp'
-                    sh 'mkdir temp && cd temp'
+                    sh 'cd ..'
+                    sh 'rm -rf temp_fold'
+                    sh 'mkdir temp_fold && cd temp_fold'
                     sh 'ls -l'
                     sh 'git clone https://github.com/RedEfire/k8s-express-app.git'
                     sh 'helm package k8s-express-app --version="${pkgVersion}" --set image.tag="${pkgVersion}"'
+                    sh 'ls -l'
                 }
             }
         }
